@@ -1,0 +1,2 @@
+validate_word_endpoint: 'https://api.dictionaryapi.dev/api/v2/entries/en'
+word_generator: 'dictionary'
