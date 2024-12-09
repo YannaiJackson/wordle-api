@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware  # Import CORSMiddleware
 from validate_guess import validate_word_length, validate_word_meaning
 from logical_word_methods import generate_random_word, split_and_check_word
 from load_config_file import load_config
@@ -10,6 +11,18 @@ import uvicorn
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = FastAPI()
+
+# Allow CORS for all origins (or specify a list of origins as needed)
+origins = ["*"]  # You can replace "*" with specific URLs, e.g., ["http://localhost:3000"]
+
+# Add the CORS middleware to the app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # List of origins that are allowed to make cross-origin requests
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allows all headers
+)
 
 
 class GuessRequest(BaseModel):
@@ -26,17 +39,29 @@ def generate_random_english_word():
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 
-@app.post("/en/check-guess")
-def check_guess(request: GuessRequest):
+@app.get("/en/validate-guess")
+def validate_guess(guess: str):
     try:
         word_validation_endpoint = load_config()['validate_word_endpoint']
-        validate_word_length(word_input=request.guess)
-        validate_word_meaning(word_input=request.guess, validate_word_endpoint=word_validation_endpoint)
+        if (validate_word_length(word_input=guess) and
+                validate_word_meaning(word_input=guess, validate_word_endpoint=word_validation_endpoint)):
+            return True
+        return False
     except Exception as e:
         raise HTTPException(status_code=422, detail=f"Invalid word input: {e}")
 
-    return split_and_check_word(word_input=request.guess, word=request.word)
+
+@app.post("/en/check-guess")
+def check_guess(request: GuessRequest):
+    try:
+        color_list = split_and_check_word(word_input=request.guess, word=request.word)
+        res = {
+            request.guess: color_list
+        }
+        return res
+    except Exception as e:
+        raise f'An error accurred: {e}'
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)

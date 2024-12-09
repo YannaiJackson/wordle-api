@@ -72,7 +72,7 @@ def split_and_check_word(word_input, word):
                 result.append('green')  # Correct letter in the correct position
                 logging.debug(f"Letter '{letter}' at index {index} is green.")
             elif letter in word:
-                result.append('yellow')  # Correct letter in the wrong position
+                result.append('orange')  # Correct letter in the wrong position
                 logging.debug(f"Letter '{letter}' at index {index} is yellow.")
             else:
                 result.append('gray')  # Letter not in the word
