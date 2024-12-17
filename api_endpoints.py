@@ -60,8 +60,4 @@ def check_guess(request: GuessRequest):
         }
         return res
     except Exception as e:
-        raise f'An error accurred: {e}'
-
-
-if __name__ == "__main__":
-    uvicorn.run("api:app", host="127.0.0.1", port=8000, reload=True)
+        raise HTTPException(status_code=400, detail=f"An error occurred: {e}")
