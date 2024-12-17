@@ -30,8 +30,8 @@ def generate_random_word(file_path):
 
         # Return a random word
         random_word = random.choice(words)
-        logging.info(f"Random word selected: {random_word}")
-        return random_word
+        logging.info(f"Random word selected: {random_word.upper()}")
+        return random_word.upper()
 
     except FileNotFoundError:
         logging.error(f"The file was not found: {file_path}")
@@ -52,6 +52,8 @@ def split_and_check_word(word_input, word):
     :param word: The target word to compare against.
     :return: A list of colors representing the correctness of each letter.
     """
+    word = word.upper()
+    word_input = word_input.upper()
     try:
         logging.info(f"Processing input: '{word_input}' against the target word: '{word}'")
 

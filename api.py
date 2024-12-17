@@ -34,7 +34,7 @@ class GuessRequest(BaseModel):
 def generate_random_english_word():
     try:
         path_to_words = f"{load_config()['word_generator']}/english.txt"
-        return generate_random_word(file_path=path_to_words)
+        return generate_random_word(file_path=path_to_words).upper()
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
@@ -51,7 +51,7 @@ def validate_guess(guess: str):
         raise HTTPException(status_code=422, detail=f"Invalid word input: {e}")
 
 
-@app.post("/en/check-guess")
+@app.post("/en/check-guess-against-word")
 def check_guess(request: GuessRequest):
     try:
         color_list = split_and_check_word(word_input=request.guess, word=request.word)

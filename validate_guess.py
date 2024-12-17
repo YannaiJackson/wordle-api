@@ -36,6 +36,7 @@ def validate_word_meaning(word_input, validate_word_endpoint):
     :param validate_word_endpoint: The endpoint URL to check the word's existence.
     :return: true or false if the word is valid meaning
     """
+    word_input = word_input.upper()
     try:
         # Make the GET request to validate the word
         url = f"{validate_word_endpoint}/{word_input}"
