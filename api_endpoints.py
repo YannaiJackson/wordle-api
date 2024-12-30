@@ -5,7 +5,7 @@ from validate_guess import validate_word_length, validate_word_meaning
 from logical_word_methods import generate_random_word, split_and_check_word
 from load_config_file import load_config
 import logging
-import uvicorn
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
