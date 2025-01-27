@@ -6,8 +6,8 @@ This FastAPI-based Python API serves as the backend for a Wordle-style game. It 
 ## Installation Steps
 1. Clone the repository:
     ```bash
-    git clone <repository_url>
-    cd <repository_name>
+    git clone https://github.com/YannaiJackson/wordle-api.git
+    cd wordle-api
     ```
 2. Install dependencies:
     ```bash
